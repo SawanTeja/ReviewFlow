@@ -28,6 +28,7 @@ export default function Layout() {
   }
 
   const isHR = user?.role === 'HR' || user?.role === 'ADMIN';
+  const isEmployee = user?.role === 'EMPLOYEE' || user?.role === 'ADMIN';
 
   return (
     <div className="app-layout">
@@ -37,11 +38,15 @@ export default function Layout() {
           <div className="user-info">{user?.name} · {user?.role}</div>
         </div>
 
-        <div className="sidebar-section">Employee</div>
-        <NavLink to="/" end>Dashboard</NavLink>
-        <NavLink to="/feedback/given">Feedback to Give</NavLink>
-        <NavLink to="/feedback/received">Feedback Received</NavLink>
-        <NavLink to="/feedback/history">Performance History</NavLink>
+        {isEmployee && (
+          <>
+            <div className="sidebar-section">Employee</div>
+            <NavLink to="/" end>Dashboard</NavLink>
+            <NavLink to="/feedback/given">Feedback to Give</NavLink>
+            <NavLink to="/feedback/received">Feedback Received</NavLink>
+            <NavLink to="/feedback/history">Performance History</NavLink>
+          </>
+        )}
 
         {isHR && (
           <>
