@@ -48,3 +48,10 @@ The seed script (`backend/src/db/seeds/seed.js`) automatically populates two cli
 - **Employees**: `emp1@brightpath.com` through `emp8@brightpath.com`
 
 *Tip: You can use the Quick Login dropdown on the login page to easily switch between test accounts without typing credentials.*
+
+## Assumptions Made
+
+1. **Implicit Management Hierarchy**: Instead of creating a dedicated `MANAGER` role, management structure is inferred via a self-referential `manager_id` foreign key on the `users` table. Anyone who has direct reports is inherently treated as a manager by the system (e.g., Rohan, Priya, Founder), allowing for infinite layers of hierarchy without complex role management.
+2. **Monthly Review Cycle**: Feedback is assigned on a monthly cadence tied to explicit "Review Periods" in the database (e.g. 8/2026). This allows HR to query completion rates for a specific month and ensures historical feedback is immutably snapshotted.
+3. **Multi-Tenant Isolation**: The system assumes strict data segregation per company for this SaaS pilot. Users, review periods, and feedback assignments are strictly scoped by `company_id`.
+4. **All HR are Employees**: HR personnel (like Kavita) or Admins (like the COO) are inherently part of the company. The UI layout treats them as regular employees first (granting them access to give/receive feedback and view performance history) while granting them additional elevated tabs (HR/Admin) on the sidebar for company management.
