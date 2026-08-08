@@ -66,7 +66,7 @@ exports.seed = async function (knex) {
   // --- Ashoka Textiles ---
   const rohanId = uuidv4();
   const priyaId = uuidv4();
-  const ashokaEmpIds = Array.from({ length: 3 }, () => uuidv4());
+  const ashokaEmpIds = Array.from({ length: 6 }, () => uuidv4());
 
   const ashokaUsers = [
     { id: rohanId, company_id: companyIds.ashoka, name: 'Rohan', email: 'rohan@ashoka.com', role: 'HR', manager_id: null },
@@ -87,7 +87,7 @@ exports.seed = async function (knex) {
 
   // --- Bright Path Consulting ---
   const founderId = uuidv4();
-  const bpEmpIds = Array.from({ length: 3 }, () => uuidv4());
+  const bpEmpIds = Array.from({ length: 8 }, () => uuidv4());
 
   const bpUsers = [
     { id: founderId, company_id: companyIds.brightPath, name: 'Founder', email: 'founder@brightpath.com', role: 'HR', manager_id: null },
@@ -173,40 +173,44 @@ exports.seed = async function (knex) {
   }
 
   // --- Ashoka June (all submitted — historical) ---
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 6; i++) {
     await createAssignment(companyIds.ashoka, ashokaPeriods.June, priyaId, ashokaEmpIds[i], 'SUBMITTED', [3, 3, 4, 3, 4]);
   }
   await createAssignment(companyIds.ashoka, ashokaPeriods.June, rohanId, priyaId, 'SUBMITTED', [3, 4, 4, 3, 4]);
 
   // --- Ashoka July (all submitted — historical) ---
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 6; i++) {
     await createAssignment(companyIds.ashoka, ashokaPeriods.July, priyaId, ashokaEmpIds[i], 'SUBMITTED', [4, 4, 4, 4, 4]);
   }
   await createAssignment(companyIds.ashoka, ashokaPeriods.July, rohanId, priyaId, 'SUBMITTED', [4, 4, 5, 4, 4]);
 
   // --- Ashoka August (mixed statuses — current cycle to test all inputs) ---
-  // Employee 1: PENDING
-  // Employee 2: DRAFT
-  // Employee 3: SUBMITTED
-  await createAssignment(companyIds.ashoka, ashokaPeriods.August, priyaId, ashokaEmpIds[0], 'PENDING', null);
-  await createAssignment(companyIds.ashoka, ashokaPeriods.August, priyaId, ashokaEmpIds[1], 'DRAFT', [3, 4, null, null, null]);
-  await createAssignment(companyIds.ashoka, ashokaPeriods.August, priyaId, ashokaEmpIds[2], 'SUBMITTED', [5, 4, 5, 4, 5]);
+  const augStatuses = ['PENDING', 'PENDING', 'DRAFT', 'DRAFT', 'SUBMITTED', 'SUBMITTED'];
+  const augScores = [null, null, [3, 4, null, null, null], [4, null, 4, null, null], [5, 4, 5, 4, 5], [4, 4, 4, 4, 4]];
+
+  for (let i = 0; i < 6; i++) {
+    await createAssignment(companyIds.ashoka, ashokaPeriods.August, priyaId, ashokaEmpIds[i], augStatuses[i], augScores[i]);
+  }
+  // Rohan reviews Priya in August (DRAFT)
+  await createAssignment(companyIds.ashoka, ashokaPeriods.August, rohanId, priyaId, 'DRAFT', [4, 5, null, null, null]);
 
   // --- Bright Path June & July (all submitted — historical) ---
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 8; i++) {
     await createAssignment(companyIds.brightPath, bpPeriods.June, founderId, bpEmpIds[i], 'SUBMITTED', [3, 3, 3, 4, 3]);
   }
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 8; i++) {
     await createAssignment(companyIds.brightPath, bpPeriods.July, founderId, bpEmpIds[i], 'SUBMITTED', [4, 4, 4, 4, 4]);
   }
 
   // --- Bright Path August (mixed) ---
-  await createAssignment(companyIds.brightPath, bpPeriods.August, founderId, bpEmpIds[0], 'PENDING', null);
-  await createAssignment(companyIds.brightPath, bpPeriods.August, founderId, bpEmpIds[1], 'DRAFT', [4, 5, null, null, null]);
-  await createAssignment(companyIds.brightPath, bpPeriods.August, founderId, bpEmpIds[2], 'SUBMITTED', [4, 4, 5, 4, 4]);
+  const bpAugStatuses = ['PENDING', 'PENDING', 'PENDING', 'DRAFT', 'DRAFT', 'SUBMITTED', 'SUBMITTED', 'SUBMITTED'];
+  const bpAugScores = [null, null, null, [4, 5, null, null, null], [3, 3, null, null, null], [4, 4, 5, 4, 4], [5, 5, 5, 5, 5], [3, 4, 4, 3, 4]];
+  for (let i = 0; i < 8; i++) {
+    await createAssignment(companyIds.brightPath, bpPeriods.August, founderId, bpEmpIds[i], bpAugStatuses[i], bpAugScores[i]);
+  }
 
   console.log('Seed complete.');
   console.log('Login credentials (all users): password123');
-  console.log('Ashoka: rohan@ashoka.com, priya@ashoka.com, emp1@ashoka.com ... emp3@ashoka.com');
-  console.log('Bright Path: founder@brightpath.com, emp1@brightpath.com ... emp3@brightpath.com');
+  console.log('Ashoka: rohan@ashoka.com, priya@ashoka.com, emp1@ashoka.com ... emp6@ashoka.com');
+  console.log('Bright Path: founder@brightpath.com, emp1@brightpath.com ... emp8@brightpath.com');
 };
