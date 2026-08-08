@@ -6,6 +6,7 @@ const errorHandler = require('./middleware/errorHandler');
 
 const authRoutes = require('./routes/auth.routes');
 const employeeRoutes = require('./routes/employee.routes');
+const hrRoutes = require('./routes/hr.routes');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api', employeeRoutes);
 app.use('/api/feedback', employeeRoutes);
+app.use('/api/hr', hrRoutes);
 
 app.use(errorHandler);
 
