@@ -1,0 +1,31 @@
+{
+  "name": "performance-evaluation-tool",
+  "version": "1.0.0",
+  "description": "Multi-tenant employee performance evaluation backend",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "migrate": "npx knex migrate:latest",
+    "migrate:rollback": "npx knex migrate:rollback --all",
+    "seed": "npx knex seed:run",
+    "reset": "npx knex migrate:rollback --all && npx knex migrate:latest && npx knex seed:run",
+    "test": "jest --runInBand --forceExit"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "pg": "^8.13.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}
