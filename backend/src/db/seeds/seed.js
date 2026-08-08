@@ -92,7 +92,7 @@ exports.seed = async function (knex) {
   const bpEmpIds = Array.from({ length: 8 }, () => uuidv4());
 
   const bpUsers = [
-    { id: founderId, company_id: companyIds.brightPath, name: 'Founder', email: 'founder@brightpath.com', role: 'HR', manager_id: null },
+    { id: founderId, company_id: companyIds.brightPath, name: 'Founder', email: 'founder@brightpath.com', role: 'ADMIN', manager_id: null },
     { id: uuidv4(), company_id: companyIds.brightPath, name: 'Kavita', email: 'kavita@brightpath.com', role: 'HR', manager_id: founderId },
     ...bpEmpIds.map((id, i) => ({
       id,

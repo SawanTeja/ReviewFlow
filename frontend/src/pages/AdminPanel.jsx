@@ -23,9 +23,9 @@ export default function AdminPanel() {
       <h1 className="page-title">Admin Panel</h1>
 
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
-        {['user', 'period', 'assignment', 'company'].map(t => (
+        {['user', 'period', 'assignment'].map(t => (
           <button key={t} className={`btn btn-sm ${tab === t ? 'btn-primary' : 'btn-outline'}`} onClick={() => setTab(t)}>
-            {t === 'user' ? 'Create User' : t === 'period' ? 'Create Period' : t === 'assignment' ? 'Create Assignment' : 'Create Company'}
+            {t === 'user' ? 'Create User' : t === 'period' ? 'Create Period' : 'Create Assignment'}
           </button>
         ))}
       </div>
