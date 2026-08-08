@@ -28,7 +28,7 @@ export default function Layout() {
   }
 
   const isHR = user?.role === 'HR' || user?.role === 'ADMIN';
-  const isEmployee = user?.role === 'EMPLOYEE' || user?.role === 'ADMIN';
+  const isEmployee = true; // Everyone is an employee (HR and Admin included)
 
   return (
     <div className="app-layout">
