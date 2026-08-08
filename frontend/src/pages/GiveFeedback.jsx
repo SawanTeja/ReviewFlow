@@ -73,33 +73,33 @@ export default function GiveFeedback() {
       {error && <div className="alert alert-error">{error}</div>}
       {msg && <div className="alert alert-success">{msg}</div>}
 
-      {assignment.status !== 'SUBMITTED' && (
-        <>
-          {parameters.map(p => (
-            <div className="param-block" key={p.id}>
-              <h4>{p.name}</h4>
-              <div className="score-row">
-                {[1, 2, 3, 4, 5].map(s => (
-                  <button
-                    key={s}
-                    className={`score-btn ${scores[p.id] === s ? 'selected' : ''}`}
-                    onClick={() => setScores(prev => ({ ...prev, [p.id]: s }))}
-                  >{s}</button>
-                ))}
-              </div>
-              <textarea
-                placeholder={`Why did you give this score for ${p.name}?`}
-                value={comments[p.id] || ''}
-                onChange={e => setComments(prev => ({ ...prev, [p.id]: e.target.value }))}
-              />
-            </div>
-          ))}
-
-          <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
-            <button className="btn btn-outline" onClick={handleDraft} disabled={saving}>Save Draft</button>
-            <button className="btn btn-success" onClick={handleSubmit} disabled={saving}>Submit Feedback</button>
+      {parameters.map(p => (
+        <div className="param-block" key={p.id}>
+          <h4>{p.name}</h4>
+          <div className="score-row">
+            {[1, 2, 3, 4, 5].map(s => (
+              <button
+                key={s}
+                className={`score-btn ${scores[p.id] === s ? 'selected' : ''}`}
+                onClick={() => setScores(prev => ({ ...prev, [p.id]: s }))}
+                disabled={assignment.status === 'SUBMITTED'}
+              >{s}</button>
+            ))}
           </div>
-        </>
+          <textarea
+            placeholder={`Why did you give this score for ${p.name}?`}
+            value={comments[p.id] || ''}
+            onChange={e => setComments(prev => ({ ...prev, [p.id]: e.target.value }))}
+            disabled={assignment.status === 'SUBMITTED'}
+          />
+        </div>
+      ))}
+
+      {assignment.status !== 'SUBMITTED' && (
+        <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
+          <button className="btn btn-outline" onClick={handleDraft} disabled={saving}>Save Draft</button>
+          <button className="btn btn-success" onClick={handleSubmit} disabled={saving}>Submit Feedback</button>
+        </div>
       )}
     </div>
   );

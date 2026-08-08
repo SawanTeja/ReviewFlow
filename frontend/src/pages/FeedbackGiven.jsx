@@ -33,13 +33,12 @@ export default function FeedbackGiven() {
                   <td>{a.recipient_name}</td>
                   <td><span className={`badge badge-${a.status.toLowerCase()}`}>{a.status}</span></td>
                   <td>
-                    {a.status !== 'SUBMITTED' ? (
-                      <Link to={`/feedback/give/${a.id}`} className="btn btn-sm btn-primary">
-                        {a.status === 'DRAFT' ? 'Continue' : 'Start'}
-                      </Link>
-                    ) : (
-                      <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>Completed</span>
-                    )}
+                    <Link
+                      to={`/feedback/give/${a.id}`}
+                      className={`btn btn-sm ${a.status !== 'SUBMITTED' ? 'btn-primary' : 'btn-outline'}`}
+                    >
+                      {a.status === 'SUBMITTED' ? 'View' : (a.status === 'DRAFT' ? 'Continue' : 'Start')}
+                    </Link>
                   </td>
                 </tr>
               ))}
