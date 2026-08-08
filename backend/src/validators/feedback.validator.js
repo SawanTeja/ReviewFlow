@@ -3,7 +3,7 @@ const Joi = require('joi');
 const feedbackItemSchema = Joi.object({
   parameterId: Joi.string().uuid().required(),
   score: Joi.number().integer().min(1).max(5).required(),
-  comment: Joi.string().min(1).required(),
+  comment: Joi.string().allow('', null).optional(),
 });
 
 const draftItemSchema = Joi.object({
