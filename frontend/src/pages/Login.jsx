@@ -76,6 +76,7 @@ export default function Login() {
           </optgroup>
           <optgroup label="Bright Path Consulting">
             <option value="founder@brightpath.com">Founder (HR / Manager)</option>
+            <option value="kavita@brightpath.com">Kavita (HR)</option>
             <option value="emp1@brightpath.com">Employee 1</option>
             <option value="emp2@brightpath.com">Employee 2</option>
             <option value="emp3@brightpath.com">Employee 3</option>
