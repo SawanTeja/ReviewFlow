@@ -46,6 +46,26 @@ router.get('/me', authenticate, controller.getProfile);
 
 /**
  * @swagger
+ * /api/me/team:
+ *   get:
+ *     tags: [Employee]
+ *     summary: Get user's direct reports
+ *     security: [{ bearerAuth: [] }]
+ */
+router.get('/me/team', authenticate, controller.getTeam);
+
+/**
+ * @swagger
+ * /api/me/team/{employeeId}/feedback:
+ *   post:
+ *     tags: [Employee]
+ *     summary: Initiate feedback for a direct report for the current open period
+ *     security: [{ bearerAuth: [] }]
+ */
+router.post('/me/team/:employeeId/feedback', authenticate, controller.initiateFeedback);
+
+/**
+ * @swagger
  * /api/me/feedback/given:
  *   get:
  *     tags: [Employee]

@@ -59,6 +59,15 @@ async function getAllAssignments(req, res, next) {
   }
 }
 
+async function getManagerCompletion(req, res, next) {
+  try {
+    const completion = await hrService.getManagerCompletion(req.params.id, req.user.companyId);
+    res.json(completion);
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   getEmployees,
   getReviewPeriods,
@@ -66,4 +75,5 @@ module.exports = {
   getPendingAssignments,
   getFeedback,
   getAllAssignments,
+  getManagerCompletion,
 };

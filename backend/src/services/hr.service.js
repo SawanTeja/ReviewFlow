@@ -168,6 +168,40 @@ async function getAllAssignments(periodId, companyId) {
     .orderBy(['reviewer.name', 'recipient.name']);
 }
 
+async function getManagerCompletion(periodId, companyId) {
+  const users = await db('users').where({ company_id: companyId, is_active: true });
+  const managersMap = {}; 
+
+  users.forEach(u => {
+    if (u.manager_id) {
+      if (!managersMap[u.manager_id]) {
+        const manager = users.find(m => m.id === u.manager_id);
+        managersMap[u.manager_id] = {
+          managerId: u.manager_id,
+          managerName: manager ? manager.name : 'Unknown',
+          totalReports: 0,
+          submittedCount: 0
+        };
+      }
+      managersMap[u.manager_id].totalReports += 1;
+    }
+  });
+
+  const assignments = await db('feedback_assignments')
+    .where({ review_period_id: periodId, company_id: companyId });
+
+  assignments.forEach(a => {
+    if (a.status === 'SUBMITTED' && managersMap[a.reviewer_id]) {
+      const recipient = users.find(u => u.id === a.recipient_id);
+      if (recipient && recipient.manager_id === a.reviewer_id) {
+        managersMap[a.reviewer_id].submittedCount += 1;
+      }
+    }
+  });
+
+  return Object.values(managersMap).sort((a, b) => a.managerName.localeCompare(b.managerName));
+}
+
 module.exports = {
   getEmployees,
   getReviewPeriods,
@@ -175,4 +209,5 @@ module.exports = {
   getPendingAssignments,
   getFeedback,
   getAllAssignments,
+  getManagerCompletion,
 };

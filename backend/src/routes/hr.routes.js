@@ -126,6 +126,25 @@ router.get('/review-periods/:id/status', authenticate, authorize('HR', 'ADMIN'),
 
 /**
  * @swagger
+ * /api/hr/review-periods/{id}/completion:
+ *   get:
+ *     tags: [HR]
+ *     summary: Get manager completion tracking for a review period
+ *     security: [{ bearerAuth: [] }]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Completion tracking by manager
+ */
+router.get('/review-periods/:id/completion', authenticate, authorize('HR', 'ADMIN'), controller.getManagerCompletion);
+
+/**
+ * @swagger
  * /api/hr/review-periods/{id}/pending:
  *   get:
  *     tags: [HR]

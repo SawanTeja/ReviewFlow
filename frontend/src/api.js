@@ -31,6 +31,8 @@ const api = {
     feedbackReceived: () => request('GET', '/me/feedback/received'),
     feedbackHistory: () => request('GET', '/me/feedback/history'),
     receivedDetail: (id) => request('GET', `/me/feedback/received/${id}`),
+    team: () => request('GET', '/me/team'),
+    initiateFeedback: (employeeId) => request('POST', `/me/team/${employeeId}/feedback`),
   },
   feedback: {
     getAssignment: (id) => request('GET', `/feedback/assignments/${id}`),
@@ -41,6 +43,7 @@ const api = {
     employees: () => request('GET', '/hr/employees'),
     reviewPeriods: () => request('GET', '/hr/review-periods'),
     periodStatus: (id) => request('GET', `/hr/review-periods/${id}/status`),
+    managerCompletion: (id) => request('GET', `/hr/review-periods/${id}/completion`),
     pendingAssignments: (id) => request('GET', `/hr/review-periods/${id}/pending`),
     allAssignments: (id) => request('GET', `/hr/review-periods/${id}/assignments`),
     feedback: (filters = {}) => {

@@ -42,6 +42,7 @@ export default function Layout() {
           <>
             <div className="sidebar-section">Employee</div>
             <NavLink to="/" end>Dashboard</NavLink>
+            <NavLink to="/team">My Team</NavLink>
             <NavLink to="/feedback/given">Feedback to Give</NavLink>
             <NavLink to="/feedback/received">Feedback Received</NavLink>
             <NavLink to="/feedback/history">Performance History</NavLink>

@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './AuthContext';
 import Login from './pages/Login';
 import Layout from './pages/Layout';
 import Dashboard from './pages/Dashboard';
+import MyTeam from './pages/MyTeam';
 import FeedbackGiven from './pages/FeedbackGiven';
 import FeedbackReceived from './pages/FeedbackReceived';
 import FeedbackHistory from './pages/FeedbackHistory';
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
             <Route index element={<Dashboard />} />
+            <Route path="team" element={<MyTeam />} />
             <Route path="feedback/given" element={<FeedbackGiven />} />
             <Route path="feedback/received" element={<FeedbackReceived />} />
             <Route path="feedback/received/:id" element={<ReceivedDetail />} />

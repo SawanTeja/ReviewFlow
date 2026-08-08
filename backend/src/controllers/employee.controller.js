@@ -83,6 +83,25 @@ async function getReceivedFeedbackDetail(req, res, next) {
   }
 }
 
+async function getTeam(req, res, next) {
+  try {
+    const team = await employeeService.getTeam(req.user.id, req.user.companyId);
+    res.json(team);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function initiateFeedback(req, res, next) {
+  try {
+    const { employeeId } = req.params;
+    const result = await employeeService.initiateFeedback(req.user.id, employeeId, req.user.companyId);
+    res.json(result);
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   getProfile,
   getFeedbackGiven,
@@ -92,4 +111,6 @@ module.exports = {
   saveDraft,
   submitFeedback,
   getReceivedFeedbackDetail,
+  getTeam,
+  initiateFeedback,
 };

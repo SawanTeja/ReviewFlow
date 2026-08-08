@@ -291,6 +291,43 @@ async function getReceivedFeedbackDetail(assignmentId, userId, companyId) {
   };
 }
 
+async function getTeam(userId, companyId) {
+  return db('users')
+    .where({ manager_id: userId, company_id: companyId, is_active: true })
+    .select('id', 'name', 'email', 'role');
+}
+
+async function initiateFeedback(reviewerId, recipientId, companyId) {
+  const period = await db('review_periods')
+    .where({ company_id: companyId, status: 'OPEN' })
+    .first();
+
+  if (!period) {
+    const err = new Error('No open review period found for this company');
+    err.status = 400;
+    throw err;
+  }
+
+  let assignment = await db('feedback_assignments')
+    .where({ reviewer_id: reviewerId, recipient_id: recipientId, review_period_id: period.id })
+    .first();
+
+  if (!assignment) {
+    const [created] = await db('feedback_assignments')
+      .insert({
+        company_id: companyId,
+        review_period_id: period.id,
+        reviewer_id: reviewerId,
+        recipient_id: recipientId,
+        status: 'PENDING'
+      })
+      .returning('*');
+    assignment = created;
+  }
+
+  return { assignmentId: assignment.id };
+}
+
 module.exports = {
   getProfile,
   getFeedbackGiven,
@@ -300,4 +337,6 @@ module.exports = {
   saveDraft,
   submitFeedback,
   getReceivedFeedbackDetail,
+  getTeam,
+  initiateFeedback,
 };
