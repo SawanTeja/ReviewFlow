@@ -292,9 +292,29 @@ async function getReceivedFeedbackDetail(assignmentId, userId, companyId) {
 }
 
 async function getTeam(userId, companyId) {
-  return db('users')
+  const team = await db('users')
     .where({ manager_id: userId, company_id: companyId, is_active: true })
     .select('id', 'name', 'email', 'role');
+
+  const period = await db('review_periods')
+    .where({ company_id: companyId, status: 'OPEN' })
+    .first();
+
+  if (period) {
+    const assignments = await db('feedback_assignments')
+      .where({ reviewer_id: userId, review_period_id: period.id })
+      .whereIn('recipient_id', team.map(t => t.id));
+
+    team.forEach(member => {
+      const assignment = assignments.find(a => a.recipient_id === member.id);
+      if (assignment) {
+        member.assignment_status = assignment.status;
+        member.assignment_id = assignment.id;
+      }
+    });
+  }
+
+  return team;
 }
 
 async function initiateFeedback(reviewerId, recipientId, companyId) {

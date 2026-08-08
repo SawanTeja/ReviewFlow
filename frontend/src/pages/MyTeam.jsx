@@ -59,13 +59,29 @@ export default function MyTeam() {
                   <td>{member.email}</td>
                   <td>{member.role}</td>
                   <td>
-                    <button 
-                      className="btn btn-sm btn-primary"
-                      onClick={() => handleInitiateFeedback(member.id)}
-                      disabled={initiating === member.id}
-                    >
-                      {initiating === member.id ? 'Starting...' : 'Write Feedback'}
-                    </button>
+                    {member.assignment_status === 'SUBMITTED' ? (
+                      <button 
+                        className="btn btn-sm btn-outline"
+                        onClick={() => navigate(`/feedback/give/${member.assignment_id}`)}
+                      >
+                        View Feedback
+                      </button>
+                    ) : member.assignment_status === 'DRAFT' || member.assignment_status === 'PENDING' ? (
+                      <button 
+                        className="btn btn-sm btn-primary"
+                        onClick={() => navigate(`/feedback/give/${member.assignment_id}`)}
+                      >
+                        {member.assignment_status === 'DRAFT' ? 'Continue Draft' : 'Write Feedback'}
+                      </button>
+                    ) : (
+                      <button 
+                        className="btn btn-sm btn-primary"
+                        onClick={() => handleInitiateFeedback(member.id)}
+                        disabled={initiating === member.id}
+                      >
+                        {initiating === member.id ? 'Starting...' : 'Write Feedback'}
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
