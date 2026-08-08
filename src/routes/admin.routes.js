@@ -155,4 +155,27 @@ router.post('/review-periods', authenticate, authorize('ADMIN', 'HR'), controlle
  */
 router.post('/feedback-assignments', authenticate, authorize('ADMIN', 'HR'), controller.createFeedbackAssignment);
 
+/**
+ * @swagger
+ * /api/admin/reseed:
+ *   post:
+ *     tags: [Admin]
+ *     summary: Reset database to seed data (debug only)
+ *     security: [{ bearerAuth: [] }]
+ *     responses:
+ *       200:
+ *         description: Database reseeded
+ */
+router.post('/reseed', async (req, res, next) => {
+  try {
+    const knex = require('../db/knex');
+    const seed = require('../db/seeds/seed');
+    await seed.seed(knex);
+    res.json({ message: 'Database reseeded successfully' });
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;
+
