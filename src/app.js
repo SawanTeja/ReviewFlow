@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerConfig = require('../swagger/config');
+const errorHandler = require('./middleware/errorHandler');
+
+const authRoutes = require('./routes/auth.routes');
 
 const app = express();
 
@@ -14,11 +17,8 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.use((err, req, res, next) => {
-  const status = err.status || 500;
-  res.status(status).json({
-    error: err.message || 'Internal server error',
-  });
-});
+app.use('/api/auth', authRoutes);
+
+app.use(errorHandler);
 
 module.exports = app;
