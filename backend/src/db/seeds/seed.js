@@ -64,12 +64,14 @@ exports.seed = async function (knex) {
   await knex('parameters').insert(paramList);
 
   // --- Ashoka Textiles ---
+  const cooId = uuidv4();
   const rohanId = uuidv4();
   const priyaId = uuidv4();
   const ashokaEmpIds = Array.from({ length: 6 }, () => uuidv4());
 
   const ashokaUsers = [
-    { id: rohanId, company_id: companyIds.ashoka, name: 'Rohan', email: 'rohan@ashoka.com', role: 'HR', manager_id: null },
+    { id: cooId, company_id: companyIds.ashoka, name: 'COO', email: 'coo@ashoka.com', role: 'ADMIN', manager_id: null },
+    { id: rohanId, company_id: companyIds.ashoka, name: 'Rohan', email: 'rohan@ashoka.com', role: 'HR', manager_id: cooId },
     { id: priyaId, company_id: companyIds.ashoka, name: 'Priya', email: 'priya@ashoka.com', role: 'EMPLOYEE', manager_id: rohanId },
     ...ashokaEmpIds.map((id, i) => ({
       id,
@@ -185,14 +187,19 @@ exports.seed = async function (knex) {
   await createAssignment(companyIds.ashoka, ashokaPeriods.July, rohanId, priyaId, 'SUBMITTED', [4, 4, 5, 4, 4]);
 
   // --- Ashoka August (mixed statuses — current cycle to test all inputs) ---
-  const augStatuses = ['PENDING', 'PENDING', 'DRAFT', 'DRAFT', 'SUBMITTED', 'SUBMITTED'];
-  const augScores = [null, null, [3, 4, null, null, null], [4, null, 4, null, null], [5, 4, 5, 4, 5], [4, 4, 4, 4, 4]];
+  // We leave Employee 5 and 6 undefined so Priya can initiate them from the My Team tab!
+  const augStatuses = ['PENDING', 'PENDING', 'DRAFT', 'SUBMITTED', null, null];
+  const augScores = [null, null, [3, 4, null, null, null], [5, 4, 5, 4, 5], null, null];
 
   for (let i = 0; i < 6; i++) {
-    await createAssignment(companyIds.ashoka, ashokaPeriods.August, priyaId, ashokaEmpIds[i], augStatuses[i], augScores[i]);
+    if (augStatuses[i]) {
+      await createAssignment(companyIds.ashoka, ashokaPeriods.August, priyaId, ashokaEmpIds[i], augStatuses[i], augScores[i]);
+    }
   }
   // Rohan reviews Priya in August (DRAFT)
   await createAssignment(companyIds.ashoka, ashokaPeriods.August, rohanId, priyaId, 'DRAFT', [4, 5, null, null, null]);
+  // COO reviews Rohan in August (PENDING)
+  await createAssignment(companyIds.ashoka, ashokaPeriods.August, cooId, rohanId, 'PENDING', null);
 
   // --- Bright Path June & July (all submitted — historical) ---
   for (let i = 0; i < 8; i++) {
@@ -203,14 +210,17 @@ exports.seed = async function (knex) {
   }
 
   // --- Bright Path August (mixed) ---
-  const bpAugStatuses = ['PENDING', 'PENDING', 'PENDING', 'DRAFT', 'DRAFT', 'SUBMITTED', 'SUBMITTED', 'SUBMITTED'];
-  const bpAugScores = [null, null, null, [4, 5, null, null, null], [3, 3, null, null, null], [4, 4, 5, 4, 4], [5, 5, 5, 5, 5], [3, 4, 4, 3, 4]];
+  // Leave last 2 unassigned to test initiation
+  const bpAugStatuses = ['PENDING', 'PENDING', 'DRAFT', 'DRAFT', 'SUBMITTED', 'SUBMITTED', null, null];
+  const bpAugScores = [null, null, [4, 5, null, null, null], [3, 3, null, null, null], [4, 4, 5, 4, 4], [5, 5, 5, 5, 5], null, null];
   for (let i = 0; i < 8; i++) {
-    await createAssignment(companyIds.brightPath, bpPeriods.August, founderId, bpEmpIds[i], bpAugStatuses[i], bpAugScores[i]);
+    if (bpAugStatuses[i]) {
+      await createAssignment(companyIds.brightPath, bpPeriods.August, founderId, bpEmpIds[i], bpAugStatuses[i], bpAugScores[i]);
+    }
   }
 
   console.log('Seed complete.');
   console.log('Login credentials (all users): password123');
-  console.log('Ashoka: rohan@ashoka.com, priya@ashoka.com, emp1@ashoka.com ... emp6@ashoka.com');
+  console.log('Ashoka: coo@ashoka.com, rohan@ashoka.com, priya@ashoka.com, emp1@ashoka.com ... emp6@ashoka.com');
   console.log('Bright Path: founder@brightpath.com, emp1@brightpath.com ... emp8@brightpath.com');
 };
