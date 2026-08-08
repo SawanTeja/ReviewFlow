@@ -54,13 +54,38 @@ export default function Login() {
         </form>
 
         <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 8 }}>Quick Login:</div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          <button className="btn btn-sm btn-outline" onClick={() => quickLogin('priya@ashoka.com')}>Priya (Employee)</button>
-          <button className="btn btn-sm btn-outline" onClick={() => quickLogin('rohan@ashoka.com')}>Rohan (HR)</button>
-          <button className="btn btn-sm btn-outline" onClick={() => quickLogin('founder@brightpath.com')}>Founder (HR)</button>
-          <button className="btn btn-sm btn-outline" onClick={() => quickLogin('emp1@ashoka.com')}>Emp1 Ashoka</button>
-          <button className="btn btn-sm btn-outline" onClick={() => quickLogin('emp1@brightpath.com')}>Emp1 BP</button>
-        </div>
+        <select 
+          className="form-group" 
+          style={{ width: '100%', padding: 8 }} 
+          onChange={(e) => {
+            if (e.target.value) quickLogin(e.target.value);
+          }}
+          defaultValue=""
+        >
+          <option value="" disabled>Select a user to login as...</option>
+          <optgroup label="Ashoka Textiles">
+            <option value="coo@ashoka.com">COO (Admin)</option>
+            <option value="rohan@ashoka.com">Rohan (HR / Manager)</option>
+            <option value="priya@ashoka.com">Priya (Manager / Employee)</option>
+            <option value="emp1@ashoka.com">Employee 1</option>
+            <option value="emp2@ashoka.com">Employee 2</option>
+            <option value="emp3@ashoka.com">Employee 3</option>
+            <option value="emp4@ashoka.com">Employee 4</option>
+            <option value="emp5@ashoka.com">Employee 5</option>
+            <option value="emp6@ashoka.com">Employee 6</option>
+          </optgroup>
+          <optgroup label="Bright Path Consulting">
+            <option value="founder@brightpath.com">Founder (HR / Manager)</option>
+            <option value="emp1@brightpath.com">Employee 1</option>
+            <option value="emp2@brightpath.com">Employee 2</option>
+            <option value="emp3@brightpath.com">Employee 3</option>
+            <option value="emp4@brightpath.com">Employee 4</option>
+            <option value="emp5@brightpath.com">Employee 5</option>
+            <option value="emp6@brightpath.com">Employee 6</option>
+            <option value="emp7@brightpath.com">Employee 7</option>
+            <option value="emp8@brightpath.com">Employee 8</option>
+          </optgroup>
+        </select>
       </div>
     </div>
   );

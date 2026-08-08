@@ -58,10 +58,10 @@ export default function Layout() {
           </>
         )}
 
-        {isHR && (
+        {user?.role === 'ADMIN' && (
           <>
             <div className="sidebar-section">Admin</div>
-            <NavLink to="/admin">Manage</NavLink>
+            <NavLink to="/admin">Manage System</NavLink>
           </>
         )}
 
