@@ -78,7 +78,7 @@ router.post('/companies', authenticate, authorize('ADMIN', 'HR'), controller.cre
  *       409:
  *         description: Email already in use
  */
-router.post('/users', authenticate, authorize('ADMIN', 'HR'), controller.createUser);
+router.post('/users', authenticate, authorize('ADMIN'), controller.createUser);
 
 /**
  * @swagger
